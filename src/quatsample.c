@@ -47,8 +47,7 @@ static GLfloat scale_factor = 1.0;
 
 static int width = WINDOW_SIZE, height = WINDOW_SIZE;
 
-static GLfloat project_to_sphere(GLfloat x, GLfloat y)
-{
+static GLfloat project_to_sphere(GLfloat x, GLfloat y) {
   GLfloat z;
   GLfloat d_sqr, d;
   
@@ -63,8 +62,7 @@ static GLfloat project_to_sphere(GLfloat x, GLfloat y)
   return z;
 }
 
-static void simulate_trackball(quat *q, GLfloat p1x, GLfloat p1y, GLfloat p2x, GLfloat p2y)
-{
+static void simulate_trackball(quat *q, GLfloat p1x, GLfloat p1y, GLfloat p2x, GLfloat p2y) {
   if (p1x == p2x && p1y == p2y) { 
     quat_identity(q);
   }
@@ -92,8 +90,7 @@ static void simulate_trackball(quat *q, GLfloat p1x, GLfloat p1y, GLfloat p2x, G
   }
 }
 
-static void create_rotation_matrix(GLfloat m[4][4], const quat *q)
-{
+static void create_rotation_matrix(GLfloat m[4][4], const quat *q) {
   m[0][0] = 1.0 - 2.0 * (q->y * q->y + q->z * q->z);
   m[0][1] =       2.0 * (q->x * q->y - q->z * q->w);
   m[0][2] =       2.0 * (q->z * q->x + q->w * q->y);
@@ -113,8 +110,7 @@ static void create_rotation_matrix(GLfloat m[4][4], const quat *q)
 }
 
 #define L 0.5
-static void draw_frame(void)
-{
+static void draw_frame(void) {
   static GLfloat vdata[8][3] = {
     { -L, -L, -L }, { L, -L, -L }, { L, L, -L }, { -L, L, -L },
     { -L, -L, L }, { L, -L, L }, { L, L, L }, { -L, L, L } };
@@ -141,8 +137,7 @@ static void draw_frame(void)
 
 #define X (0.525731112119133606 / 2.0)
 #define Z (0.850650808352039932 / 2.0)
-static void draw_object(void)
-{
+static void draw_object(void) {
   static GLfloat vdata[12][3] = {
     { -X, 0.0, Z }, { X, 0.0, Z }, { -X, 0.0, -Z },
     { X, 0.0, -Z }, { 0.0, Z, X }, { 0.0, Z, -X },
@@ -169,8 +164,7 @@ static void draw_object(void)
   }
 }
 
-static void draw(void)
-{
+static void draw(void) {
   static int first_call = TRUE;
   static GLint display_list = 0;
 	
@@ -187,8 +181,7 @@ static void draw(void)
   }
 }
 
-static void display_func(void)
-{
+static void display_func(void) {
   static GLfloat v[4][4] = {
     { 1.0, 0.0, 0.0, 0.0 },
     { 0.0, 1.0, 0.0, 0.0 },
@@ -211,8 +204,7 @@ static void display_func(void)
   glutSwapBuffers();
 }
 
-static void reshape_func(int w, int h)
-{
+static void reshape_func(int w, int h) {
   glViewport(0, 0, (GLsizei)w, (GLsizei)h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -222,8 +214,7 @@ static void reshape_func(int w, int h)
   height = h;
 }
 
-static void app_menu_func(int menu)
-{
+static void app_menu_func(int menu) {
   switch (menu) {
   case APP_QUIT:
     exit(0);
@@ -233,13 +224,11 @@ static void app_menu_func(int menu)
   }
 }
 
-static void menu_func(int dummy0)
-{
+static void menu_func(int dummy0) {
   return;
 }
 
-static void keyboard_func(unsigned char key, int dummy1, int dummy2)
-{
+static void keyboard_func(unsigned char key, int dummy1, int dummy2) {
   switch (key) {
   case 'q':
   case 'Q':
@@ -250,8 +239,7 @@ static void keyboard_func(unsigned char key, int dummy1, int dummy2)
   }
 }
 
-static void mouse(int button, int state, int x, int y)
-{
+static void mouse(int button, int state, int x, int y) {
   if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
     begin_x = x;
     begin_y = y;
@@ -264,8 +252,7 @@ static void mouse(int button, int state, int x, int y)
   }
 }
 
-static void motion(int x, int y)
-{
+static void motion(int x, int y) {
   static int count = 0;
   
   if (scaling) {
@@ -294,8 +281,7 @@ static void motion(int x, int y)
   }
 }
 
-static void init_glut_menu(void)
-{
+static void init_glut_menu(void) {
   int app_menu;
   
   app_menu = glutCreateMenu(app_menu_func);
@@ -307,8 +293,7 @@ static void init_glut_menu(void)
   glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
-static void init_glut(int *argc, char **argv)
-{
+static void init_glut(int *argc, char **argv) {
   glutInit(argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(WINDOW_SIZE, WINDOW_SIZE);
@@ -323,8 +308,7 @@ static void init_glut(int *argc, char **argv)
   init_glut_menu();
 }
 
-static void init_gl(void)
-{
+static void init_gl(void) {
   static GLfloat light1[] = { 0.0, 0.0, -10.0, 1.0 };
 	
   glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -342,8 +326,7 @@ static void init_gl(void)
   simulate_trackball(&curr, 0.0, 0.0, 0.0, 0.0);
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   init_glut(&argc, argv);
   init_gl();
   glutMainLoop();
